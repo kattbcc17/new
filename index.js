@@ -8,7 +8,11 @@ const path = require('path');
 const app = express();
 
 // Set up session and passport
-app.use(session({ secret: 'your-session-secret', resave: false, saveUninitialized: true }));
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
