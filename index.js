@@ -1,67 +1,44 @@
 require('dotenv').config();
 const express = require('express');
-const axios = require('axios');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
-const path = require('path');
+const passport = require('passport');
+const { initDb } = require('./db/db');  // Correctly require the initDb function
+const incomeRoutes = require('./routes/income');
+const expenseRoutes = require('./routes/expense');
+const authRoutes = require('./routes/auth');  // Import the auth routes
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const cors = require('cors');
+const User = require('./models/User');  // Assuming you have a User model
+
 const app = express();
+const PORT = process.env.PORT || 8080;
 
-// Set up session and passport
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
+// Allow CORS for the front-end URL
+app.use(cors({
+  origin: 'http://127.0.0.1:5500',
+  methods: ['GET', 'POST'],
 }));
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Serve static files
-app.use(express.static(path.join(__dirname, 'static')));
 
 // Google OAuth setup
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:8080/auth/google',
-  },
-  (accessToken, refreshToken, profile, done) => {
-    // Store the user profile and token as needed (or in a database)
-    return done(null, { profile, accessToken });
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: `${process.env.BASE_URL}/auth/google/callback`,  // Update BASE_URL for live server
+}, async (accessToken, refreshToken, profile, done) => {
+  try {
+    let user = await User.findOne({ googleId: profile.id });
+    if (!user) {
+      user = new User({
+        googleId: profile.id,
+        name: profile.displayName,
+        email: profile.emails[0].value,
+      });
+      await user.save();
+    }
+    done(null, user);
+  } catch (err) {
+    done(err);
   }
-));
+}));
 
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
-
-// Routes
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'static/index.html'));
-});
-
-app.get('/auth', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-app.get('/oauth-callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
-  (req, res) => {
-    // Send the token to frontend (you can modify this as needed)
-    res.redirect(`/?token=${req.user.accessToken}`);
-  }
-);
-
-app.get('/logout', (req, res) => {
-  req.logout(() => {
-    res.redirect('/');
-  });
-});
-
-// Start the server
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+passport
