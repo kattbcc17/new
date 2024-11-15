@@ -1,7 +1,7 @@
 // routes/income.js
 const express = require('express');
 const router = express.Router();
-const Income = require('../models/Income');
+const Income = require('../models/income');
 
 // Add income
 router.post('/add', async (req, res) => {
