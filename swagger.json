@@ -1,0 +1,141 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Finance Tracker API",
+    "description": "API documentation for Finance Tracker",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "Root endpoint",
+        "responses": {
+          "200": {
+            "description": "API is up and running"
+          }
+        }
+      }
+    },
+    "/add": {
+      "post": {
+        "description": "Add a new transaction",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/{userId}": {
+      "get": {
+        "description": "Get transactions by user ID",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/{id}": {
+      "delete": {
+        "description": "Delete a transaction by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/google": {
+      "get": {
+        "description": "Google OAuth login",
+        "responses": {
+          "default": {
+            "description": "Redirect to Google"
+          }
+        }
+      }
+    },
+    "/google/callback": {
+      "get": {
+        "description": "Google OAuth callback",
+        "responses": {
+          "default": {
+            "description": "Handle OAuth callback"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "description": "Logout user",
+        "responses": {
+          "default": {
+            "description": "Logout successfully"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Transaction": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "example": "user123"
+        },
+        "amount": {
+          "type": "number",
+          "example": 100
+        },
+        "category": {
+          "type": "string",
+          "example": "Food"
+        },
+        "description": {
+          "type": "string",
+          "example": "Lunch"
+        }
+      }
+    }
+  }
+}

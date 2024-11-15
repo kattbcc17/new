@@ -1,0 +1,33 @@
+[
+    {
+      "userId": "1",
+      "amount": 5000,
+      "category": "Salary",
+      "description": "Monthly salary payment"
+    },
+    {
+      "userId": "2",
+      "amount": 1500,
+      "category": "Freelance",
+      "description": "Freelance project payment"
+    },
+    {
+      "userId": "3",
+      "amount": 200,
+      "category": "Gift",
+      "description": "Birthday gift"
+    },
+    {
+      "userId": "1",
+      "amount": 1200,
+      "category": "Bonus",
+      "description": "End of year bonus"
+    },
+    {
+      "userId": "4",
+      "amount": 250,
+      "category": "Refund",
+      "description": "Refund from online purchase"
+    }
+  ]
+  

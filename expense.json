@@ -1,0 +1,33 @@
+[
+    {
+      "userId": "1",
+      "amount": 1000,
+      "category": "Rent",
+      "description": "Monthly rent for apartment"
+    },
+    {
+      "userId": "2",
+      "amount": 150,
+      "category": "Groceries",
+      "description": "Weekly grocery shopping"
+    },
+    {
+      "userId": "3",
+      "amount": 75,
+      "category": "Entertainment",
+      "description": "Movie tickets and snacks"
+    },
+    {
+      "userId": "1",
+      "amount": 200,
+      "category": "Utilities",
+      "description": "Electricity and water bills"
+    },
+    {
+      "userId": "4",
+      "amount": 120,
+      "category": "Transport",
+      "description": "Public transportation for work"
+    }
+  ]
+  
