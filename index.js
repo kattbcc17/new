@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
-const { initDb } = require('./db/db');  // Correctly require the initDb function
+const { initDb } = require('./db/db');  
 const incomeRoutes = require('./routes/income');
 const expenseRoutes = require('./routes/expense');
 const authRoutes = require('./routes/auth');  // Import the auth routes
